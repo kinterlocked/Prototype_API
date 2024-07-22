@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>네이버 로그인 API</title>
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- 로그인 폼 -->
+  <div class="container">
+    <h1>네이버 로그인 API 구현</h1>
+    <div class="login-area">
+      <div id="message">
+        네이버 로그인 버튼을 통해 로그인하기
+      </div>
+      <div id="button_area">
+        <div id="naverIdLogin"></div>
+      </div>
+    </div>
+  </div>
+  <!-- 네이버 로그인 라이브러리를 스크립트로 삽입한 부분입니다 -->
+  <script src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.2.js" charset="utf-8"></script>
+
+  <script type="text/javascript">
+
+  const naverLogin = new naver.LoginWithNaverId(
+   {
+    // 신청한 어플리케이션의 클라이언트 id , 로그인 동의 이후 콜백페이지의 url기입.
+    clientId: "9DN_mBNWkrX01ygXCQFA",
+    callbackUrl: "http://127.0.0.1:5500/index.html",
+    // 로그인 api에서 제공하는 버튼 타입 공식문서 참조하면 로그인 버튼의 형태 변경 가능.
+    loginButton: {color: "green", type: 2, height: 40}
+    }
+   );
+
+
+    naverLogin.init();  
+    naverLogin.getLoginStatus(function (status) {
+      // 로그인된 상태인지 체크 후 내가 웹 페이지에서 사용하고자 하는 변수를 가져다 사용할 수 있습니당.
+      if (status) {
+
+        // 웹 페이지에서 표시하고 싶은 정보를 get메서드를 통해 가져와서 설정 가능
+          const nickName=naverLogin.user.getNickName();
+          const age=naverLogin.user.getAge();
+          const birthday=naverLogin.user.getBirthday();
+
+        // 웹 페이지에서 필수 제공으로 설정했던 정보에 대한 제공여부를 체크했는지 검증하는 로직
+        // 이번 api에서는 임의로 이름으로 설정했습니당
+        // 추후 db나 서버와 연동 할 때는 전화번호 등 중복이 없는 정보를 가져와 DB에 등록하면서 회원정보를 저장해도 될 것 같습니당 
+          if(nickName===null||nickName===undefined ){
+            alert("별명이 필요합니다. 정보제공을 동의해주세요.");
+            naverLogin.reprompt();
+            return ;  
+         }else{
+          setLoginStatus();
+         }
+    }
+    });
+    console.log(naverLogin.user);
+
+    function setLoginStatus(){
+
+      // 로그인이 성공된 뒤 유저 정보를 화면에 출력해서 확인시키는 로직입니다.
+      // naverLogin.user 를 통해 로그인된 유저의 전체 정보에 대해 확인이 가능하며
+      // 68 , 69 , 70번째 줄에서 확인 가능하듯 naverLogin.user.'원하는 정보' 를 통해서 유저의 정보에 접근할 수 있습니다.
+      const message_area=document.getElementById('message');
+      message_area.innerHTML=`
+      <h3> Login 성공 </h3>
+      <div>user Nickname : ${naverLogin.user.nickname}</div>
+      <div>user Age(범위) : ${naverLogin.user.age}</div>
+      <div>user Birthday : ${naverLogin.user.birthday}</div>
+      <div>user Mobile : ${naverLogin.user.mobile}</div>
+      `;
+
+    
+      const button_area=document.getElementById('button_area');
+      button_area.innerHTML="<button id='btn_logout'>로그아웃</button>";
+
+      // 로그아웃 로직입니다. 해당 웹페이지에서 로그아웃을 시키는 용도이며 네이버 아이디 자체에서 서비스 연결을 끊는건 아닙니다.
+      // 네이버 아이디에서 연결된 서비스를 해제하려면
+      // 네이버 로그인 -> 로그인 후 이름 클릭 -> 상단 이력관리 탭 클릭 -> 연결된 서비스 관리 전체보기 클릭 ->  가입된 서비스 클릭후 연결 해제
+      const logout=document.getElementById('btn_logout');
+      logout.addEventListener('click',(e)=>{
+        // 로그아웃 시킨 후 로그인 페이지로 다시 리플레이스 시키는 로직
+        naverLogin.logout();
+    location.replace("http://127.0.0.1:5500/index.html");
+      })
+    }
+  </script>
+</html>

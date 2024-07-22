@@ -1,0 +1,10 @@
+# 메일 보내기 기능
+spring:
+  mail:
+    host: smtp.naver.com
+    port: 465
+    username: # SMTP 설정을 해 둔 이메일 주소를 작성
+    password: # 위 이메일의 비밀번호
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true

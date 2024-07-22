@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>키워드 검색 결과</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>키워드 검색 결과</h1>
+    <input type="text" id="keyword-input" placeholder="키워드를 입력하세요">
+    <button id="search-button">검색</button>
+    <table>
+        <thead>
+            <tr>
+                <th>연관키워드</th>
+                <th>PC월간검색수</th>
+                <th>mobile월간 검색수</th>
+                <th>PC월평균클릭수</th>
+                <th>mobile월평균클수</th>
+                <th>경쟁정도</th>
+            </tr>
+        </thead>
+        <tbody id="results">
+        </tbody>
+    </table>
+    <script src="search.js"></script>
+</body>
+</html>

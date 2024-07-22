@@ -1,0 +1,6 @@
+spring.application.name=coolsms
+
+sms.api-key=NCSZYJQ4GZ4PQPXC
+sms.api-secret-key=73ETEWAWMDMF7VTJXHYGPPXYJUYWVURN
+sms.domain=https://api.coolsms.co.kr
+sms.from-number=O1O99802701
